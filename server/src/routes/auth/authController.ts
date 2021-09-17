@@ -77,4 +77,11 @@ async function logIn(req: CustomRequest<LoginModel>, res: Response) {
     .json({ message: 'Login successful.' })
 }
 
-export { signUp, logIn }
+function logOut(req: Request, res: Response) {
+  return res
+    .clearCookie('access_token')
+    .status(200)
+    .json({ message: 'Successfully logged out' })
+}
+
+export { signUp, logIn, logOut }

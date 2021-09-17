@@ -1,6 +1,7 @@
 import express from 'express'
 import { check } from 'express-validator'
-import { signUp, logIn } from './authController'
+import { authorization } from '../../utils/checkAuth'
+import { signUp, logIn, logOut } from './authController'
 
 const authRouter = express.Router()
 
@@ -26,5 +27,7 @@ authRouter.post(
     .withMessage('Password must be 6 characters long'),
   logIn
 )
+
+authRouter.get('/logout', authorization, logOut)
 
 export default authRouter

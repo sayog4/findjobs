@@ -10,6 +10,7 @@ function authorization(req: Request, res: Response, next: NextFunction) {
     const data = verify(token, process.env.JWT_SECRET as string)
     if (typeof data === 'string') return res.sendStatus(403)
     req.userId = data.id
+    return next()
   } catch (error) {
     return res.sendStatus(403)
   }
