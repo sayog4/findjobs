@@ -1,9 +1,9 @@
-import { Schema, model, Document } from 'mongoose'
+import { Schema, model, Document, ObjectId } from 'mongoose'
 
 export interface IUser extends Document {
   email: String
   password: string
-  userName?: string
+  userName: string
   firstName?: string
   lastname?: string
   mobileNumber?: string
@@ -15,6 +15,11 @@ export interface IUser extends Document {
   projects?: string[]
   experience?: string[]
   appliedJobs: any[] // put later after creating job model  IJob['_id'];
+}
+export interface SigninModel extends Document {
+  email: String
+  password: string
+  userName: string
 }
 
 const userSchema = new Schema(
@@ -82,6 +87,6 @@ const userSchema = new Schema(
   { timestamps: true }
 )
 
-const User = model<IUser>('User', userSchema)
+const User = model<IUser>('User', userSchema, 'User')
 
 export default User
