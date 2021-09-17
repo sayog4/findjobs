@@ -22,6 +22,11 @@ export interface SigninModel extends Document {
   userName: string
 }
 
+export interface LoginModel extends Document {
+  email: String
+  password: string
+}
+
 const userSchema = new Schema(
   {
     email: {
