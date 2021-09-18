@@ -72,8 +72,9 @@ async function logIn(req: CustomRequest<LoginModel>, res: Response) {
     .cookie('access_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
+      domain: '',
     })
-    .status(201)
+    .status(200)
     .json({ message: 'Login successful.' })
 }
 
