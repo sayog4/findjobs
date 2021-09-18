@@ -1,4 +1,5 @@
-import { Schema, model, Document, ObjectId } from 'mongoose'
+import { Schema, model, Document } from 'mongoose'
+import { IJob } from './jobModel'
 
 export interface IUser extends Document {
   email: String
@@ -14,7 +15,7 @@ export interface IUser extends Document {
   skills?: string[]
   projects?: string[]
   experience?: string[]
-  appliedJobs: any[] // put later after creating job model  IJob['_id'];
+  appliedJobs: IJob['_id'][]
 }
 export interface SigninModel extends Document {
   email: String
@@ -82,12 +83,15 @@ const userSchema = new Schema(
       type: [],
       default: [''],
     },
-    appliedJobs: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Job',
-      },
-    ],
+    appliedJobs: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Job',
+        },
+      ],
+      required: true,
+    },
   },
   { timestamps: true }
 )
