@@ -1,6 +1,22 @@
 import { Schema, model, Document } from 'mongoose'
 import { IUser } from './userModel'
 
+export interface CreatejobModel extends Document {
+  title: string
+  department: string
+  salaryFrom: number
+  salaryTo: number
+  experience: string
+  smallDescription: string
+  fullDescription: string
+  minimumQualification: string
+  skillsRequired: string
+  company: string
+  email: string
+  phoneNumber: string
+  companyDescription: string
+}
+
 export interface IJob extends Document {
   title: string
   department: string
@@ -80,7 +96,6 @@ const jobSchema = new Schema(
           ref: 'User',
         },
       ],
-      required: true,
     },
   },
   { timestamps: true }

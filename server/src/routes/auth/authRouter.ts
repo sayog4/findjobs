@@ -7,11 +7,13 @@ const authRouter = express.Router()
 
 authRouter.post(
   '/signup',
-  check('email').isEmail().withMessage('Provide valid email address'),
+  check('email').exists().isEmail().withMessage('Provide valid email address'),
   check('password')
+    .exists()
     .isLength({ min: 6 })
     .withMessage('Password must be 6 characters long'),
   check('userName')
+    .exists()
     .isString()
     .withMessage('Username must be string')
     .isLength({ min: 4 })
@@ -21,8 +23,9 @@ authRouter.post(
 
 authRouter.post(
   '/login',
-  check('email').isEmail().withMessage('Provide valid email address'),
+  check('email').exists().isEmail().withMessage('Provide valid email address'),
   check('password')
+    .exists()
     .isLength({ min: 6 })
     .withMessage('Password must be 6 characters long'),
   logIn
