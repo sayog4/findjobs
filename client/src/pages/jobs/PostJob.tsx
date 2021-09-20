@@ -1,35 +1,73 @@
 import React from 'react'
-import { Col, Row, Form, Tabs, Input, Select, Button, Typography } from 'antd'
+import { useHistory } from 'react-router-dom'
+import {
+  Col,
+  Row,
+  Form,
+  Tabs,
+  Input,
+  Select,
+  Button,
+  message,
+  InputNumber,
+} from 'antd'
 import Pagelayout from '../../components/Pagelayout'
+import { usePostJob } from './hooks/usePostJob'
 
 const { TabPane } = Tabs
 const { TextArea } = Input
 const { Option } = Select
-const { Text } = Typography
 
 const Postjob = () => {
-  const [jobInfo, setJobInfo] = React.useState({})
+  const history = useHistory()
+  const { mutate, isError, isSuccess, error } = usePostJob()
+
+  const [errors, setErrors] = React.useState<any>()
+  const [comapnyInfo, setCompanyInfo] = React.useState({})
   const [activeTab, setActiveTab] = React.useState('0')
 
-  function jobInfoFinish(values: any) {
-    console.log(values)
+  function companyFormFinish(values: any) {
+    setCompanyInfo(values)
     setActiveTab('1')
   }
 
   function finalFormFinish(values: any) {
-    console.log(values)
+    setErrors({})
+    const newObj = {
+      ...comapnyInfo,
+      salaryFrom: parseFloat(values.salaryFrom),
+      salaryTo: parseFloat(values.salaryTo),
+      ...values,
+    }
+    mutate(newObj)
   }
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      history.push('/')
+    }
+  }, [isSuccess, history])
+
+  React.useEffect(() => {
+    if (isError) {
+      let err = error as any
+      setErrors(err?.response?.data?.errors)
+      message.error('Check previous and current tab for error')
+    }
+  }, [error, isError])
 
   return (
     <Pagelayout>
       <Tabs defaultActiveKey="0" activeKey={activeTab}>
-        <TabPane tab="Job Info" key="0">
-          <Form layout="vertical" onFinish={jobInfoFinish}>
+        <TabPane tab="Company Info" key="0">
+          <Form layout="vertical" onFinish={companyFormFinish}>
             <Row gutter={16}>
               <Col lg={8} sm={24}>
                 <Form.Item
-                  label="Job Title"
-                  name="title"
+                  validateStatus={errors?.companyName && 'error'}
+                  help={errors?.companyName}
+                  label="Company Name"
+                  name="companyName"
                   rules={[{ required: true }]}
                 >
                   <Input />
@@ -37,6 +75,62 @@ const Postjob = () => {
               </Col>
               <Col lg={8} sm={24}>
                 <Form.Item
+                  validateStatus={errors?.companyEmail && 'error'}
+                  help={errors?.companyEmail}
+                  label="Company Email"
+                  name="email"
+                  rules={[{ required: true }, { type: 'email' }]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col lg={8} sm={24}>
+                <Form.Item
+                  validateStatus={errors?.phoneNumber && 'error'}
+                  help={errors?.phoneNumber}
+                  label="Phone Number"
+                  name="phoneNumber"
+                  rules={[{ required: true }]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col lg={24} sm={24}>
+                <Form.Item
+                  validateStatus={errors?.companyDescription && 'error'}
+                  help={errors?.companyDescription}
+                  label="Company Description"
+                  name="companyDescription"
+                  rules={[{ required: true }]}
+                >
+                  <TextArea rows={3} />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Button type="primary" htmlType="submit">
+              Next
+            </Button>
+          </Form>
+        </TabPane>
+
+        <TabPane tab="Job Info" key="1">
+          <Form layout="vertical" onFinish={finalFormFinish}>
+            <Row gutter={16}>
+              <Col lg={8} sm={24}>
+                <Form.Item
+                  label="Job Title"
+                  name="title"
+                  validateStatus={errors?.title && 'error'}
+                  help={errors?.title}
+                  rules={[{ required: true }]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col lg={8} sm={24}>
+                <Form.Item
+                  validateStatus={errors?.department && 'error'}
+                  help={errors?.department}
                   label="Department"
                   name="department"
                   rules={[{ required: true }]}
@@ -46,6 +140,8 @@ const Postjob = () => {
               </Col>
               <Col lg={8} sm={24}>
                 <Form.Item
+                  validateStatus={errors?.experience && 'error'}
+                  help={errors?.experience}
                   label="Experience"
                   name="experience"
                   rules={[{ required: true }]}
@@ -55,20 +151,24 @@ const Postjob = () => {
               </Col>
               <Col lg={8} sm={24}>
                 <Form.Item
+                  validateStatus={errors?.salaryFrom && 'error'}
+                  help={errors?.salaryFrom}
                   label="Salary From"
                   name="salaryFrom"
                   rules={[{ required: true }]}
                 >
-                  <Input />
+                  <InputNumber />
                 </Form.Item>
               </Col>
               <Col lg={8} sm={24}>
                 <Form.Item
+                  validateStatus={errors?.salaryTo && 'error'}
+                  help={errors?.salaryTo}
                   label="Salary To"
                   name="salaryTo"
                   rules={[{ required: true }]}
                 >
-                  <Input />
+                  <InputNumber />
                 </Form.Item>
               </Col>
             </Row>
@@ -76,6 +176,8 @@ const Postjob = () => {
             <Row gutter={16}>
               <Col lg={8} sm={24}>
                 <Form.Item
+                  validateStatus={errors?.skillsRequired && 'error'}
+                  help={errors?.skillsRequired}
                   label="Skills"
                   name="skillsRequired"
                   rules={[
@@ -91,6 +193,8 @@ const Postjob = () => {
               </Col>
               <Col lg={8} sm={24}>
                 <Form.Item
+                  validateStatus={errors?.minimumQualification && 'error'}
+                  help={errors?.minimumQualification}
                   label="Minimum Qualification"
                   name="minimumQualification"
                   rules={[{ required: true }]}
@@ -104,8 +208,10 @@ const Postjob = () => {
               </Col>
               <Col lg={24} sm={24}>
                 <Form.Item
-                  label="Small Description"
-                  name="smallDescription"
+                  validateStatus={errors?.shortDescription && 'error'}
+                  help={errors?.shortDescription}
+                  label="Short Description"
+                  name="shortDescription"
                   rules={[{ required: true }]}
                 >
                   <TextArea rows={3} />
@@ -113,56 +219,13 @@ const Postjob = () => {
               </Col>
               <Col lg={24} sm={24}>
                 <Form.Item
+                  validateStatus={errors?.fullDescription && 'error'}
+                  help={errors?.fullDescription}
                   label="Full Description"
                   name="fullDescription"
                   rules={[{ required: true }]}
                 >
                   <TextArea rows={5} />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Button type="primary" htmlType="submit">
-              Next
-            </Button>
-          </Form>
-        </TabPane>
-        <TabPane tab="Company Info" key="1">
-          <Form layout="vertical" onFinish={finalFormFinish}>
-            <Row gutter={16}>
-              <Col lg={8} sm={24}>
-                <Form.Item
-                  label="Company Name"
-                  name="company"
-                  rules={[{ required: true }]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col lg={8} sm={24}>
-                <Form.Item
-                  label="Company Email"
-                  name="email"
-                  rules={[{ required: true }, { type: 'email' }]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col lg={8} sm={24}>
-                <Form.Item
-                  label="Phone Number"
-                  name="phoneNumber"
-                  rules={[{ required: true }]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col lg={24} sm={24}>
-                <Form.Item
-                  label="Company Description"
-                  name="companyDescription"
-                  rules={[{ required: true }]}
-                >
-                  <TextArea rows={3} />
                 </Form.Item>
               </Col>
             </Row>

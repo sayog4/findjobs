@@ -8,8 +8,8 @@ import jobRouter from './routes/job/jobRouter'
 const app: Application = express()
 app.use(
   cors({
-    origin: 'http://localhost:3000',
     credentials: true,
+    origin: 'http://localhost:3000',
   })
 )
 app.use(morgan('combined'))

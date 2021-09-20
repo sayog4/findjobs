@@ -31,8 +31,7 @@ async function createJob(req: CustomRequest<CreatejobModel>, res: Response) {
     postedBy: req.userId,
   }
   const job = await Job.create(newJobData)
-
-  return job
+  return res.status(201).send(job)
 }
 
 export { createJob }
