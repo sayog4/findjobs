@@ -47,7 +47,7 @@ jobRouter.post(
     .exists()
     .isString()
     .withMessage('Phone Number is required.'),
-  // authorization,
+  authorization,
   createJob
 )
 
