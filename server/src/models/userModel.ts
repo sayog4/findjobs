@@ -1,6 +1,22 @@
 import { Schema, model, Document } from 'mongoose'
 import { IJob } from './jobModel'
 
+export interface CreateJob extends Document {
+  email: String
+  password: string
+  userName: string
+  firstName: string
+  lastname: string
+  mobileNumber: string
+  portfolio: string
+  about: string
+  address: string
+  education: string[]
+  skills: string[]
+  projects: string[]
+  experience: string[]
+}
+
 export interface IUser extends Document {
   email: String
   password: string

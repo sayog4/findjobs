@@ -4,6 +4,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import authRouter from './routes/auth/authRouter'
 import jobRouter from './routes/job/jobRouter'
+import userRouter from './routes/user/userRouter'
 
 const app: Application = express()
 app.use(
@@ -18,6 +19,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/auth', authRouter)
+app.use('/api/user', userRouter)
 app.use('/api/job', jobRouter)
 
 export default app
