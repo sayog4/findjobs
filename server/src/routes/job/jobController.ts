@@ -1,7 +1,7 @@
 import { Response, Request } from 'express'
 import { validationResult } from 'express-validator'
 import Job, { CreatejobModel } from './../../models/jobModel'
-import { CustomRequest } from '../../types'
+import { CustomRequest, Params } from '../../types'
 import { formatError } from '../../utils/formatError'
 
 async function createJob(req: CustomRequest<CreatejobModel>, res: Response) {
@@ -39,4 +39,16 @@ async function findJobs(req: Request, res: Response) {
   return res.status(200).send(jobs)
 }
 
-export { createJob, findJobs }
+interface ReqParams extends Params {
+  id: string
+}
+
+async function getJobDetails(
+  req: CustomRequest<any, any, ReqParams>,
+  res: Response
+) {
+  const job = await Job.findById(req.params.id)
+  return res.status(200).send(job)
+}
+
+export { createJob, findJobs, getJobDetails }
