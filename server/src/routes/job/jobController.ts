@@ -1,5 +1,6 @@
 import { Response, Request } from 'express'
 import { validationResult } from 'express-validator'
+import { isValidObjectId } from 'mongoose'
 import Job, { CreatejobModel } from './../../models/jobModel'
 import { CustomRequest, Params } from '../../types'
 import { formatError } from '../../utils/formatError'
@@ -47,7 +48,13 @@ async function getJobDetails(
   req: CustomRequest<any, any, ReqParams>,
   res: Response
 ) {
-  const job = await Job.findById(req.params.id)
+  const { id } = req.params
+  if (!isValidObjectId(id))
+    return res.status(400).json({ message: 'No data avialable' })
+  const job = await Job.findById(id)
+  if (!job) {
+    return res.status(400).json({ message: 'No data avialable' })
+  }
   return res.status(200).send(job)
 }
 

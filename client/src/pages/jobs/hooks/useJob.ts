@@ -18,3 +18,11 @@ async function getAllJobs(): Promise<AxiosResponse<Job[]>> {
 export function useGetAllJobs() {
   return useQuery(queryKeys.jobs, getAllJobs)
 }
+
+async function getJobDetail(id: string): Promise<Job> {
+  return (await axiosInstance.get(`/api/job/${id}`)).data
+}
+
+export function useJobDetail(id: string) {
+  return useQuery<Job, any>([queryKeys.job, id], () => getJobDetail(id))
+}

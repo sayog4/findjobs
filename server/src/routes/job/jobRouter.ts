@@ -1,5 +1,5 @@
 import express from 'express'
-import { check } from 'express-validator'
+import { check, param } from 'express-validator'
 import { authorization } from '../../utils/checkAuth'
 import { createJob, findJobs, getJobDetails } from './jobController'
 
