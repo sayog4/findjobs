@@ -12,7 +12,7 @@ import {
   InputNumber,
 } from 'antd'
 import Pagelayout from '../../components/Pagelayout'
-import { usePostJob } from './hooks/usePostJob'
+import { usePostJob } from './hooks/useJob'
 
 const { TabPane } = Tabs
 const { TextArea } = Input

@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { Response, Request } from 'express'
 import { validationResult } from 'express-validator'
 import Job, { CreatejobModel } from './../../models/jobModel'
 import { CustomRequest } from '../../types'
@@ -34,4 +34,9 @@ async function createJob(req: CustomRequest<CreatejobModel>, res: Response) {
   return res.status(201).send(job)
 }
 
-export { createJob }
+async function findJobs(req: Request, res: Response) {
+  const jobs = await Job.find({})
+  return res.status(200).send(jobs)
+}
+
+export { createJob, findJobs }

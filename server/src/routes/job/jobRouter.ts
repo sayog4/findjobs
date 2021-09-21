@@ -1,12 +1,14 @@
 import express from 'express'
 import { check } from 'express-validator'
 import { authorization } from '../../utils/checkAuth'
-import { createJob } from './jobController'
+import { createJob, findJobs } from './jobController'
 
 const jobRouter = express.Router()
 
+jobRouter.get('/getalljobs', findJobs)
+
 jobRouter.post(
-  '/',
+  '/createjob',
   check('title')
     .exists()
     .isString()

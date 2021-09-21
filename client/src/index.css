@@ -59,3 +59,12 @@ code {
   text-align: center;
   font-size: 30px !important;
 }
+.ant-message {
+  z-index: 99999 !important;
+}
+.ant-spin {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
