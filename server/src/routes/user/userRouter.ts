@@ -12,7 +12,7 @@ userRouter.post(
   authorization,
   check('firstName').exists().isString().withMessage('firstname is required'),
   check('lastName').exists().isString().withMessage('lastname is required'),
-  check('firstName')
+  check('email')
     .exists()
     .isString()
     .isEmail()
@@ -21,7 +21,7 @@ userRouter.post(
   check('portfolio')
     .exists()
     .isString()
-    .isURL()
+    .isURL({ protocols: ['https', 'http'] })
     .withMessage('Provide valid url'),
   check('about')
     .exists()

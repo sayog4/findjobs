@@ -9,8 +9,7 @@ import Userprofile from './user/Userprofile'
 
 function Routes() {
   const { user } = useAuth()
-  console.log(user)
-  return <>{!user ? <UnAuthenticatedApp /> : <AuthenticatedApp />}</>
+  return !user ? <UnAuthenticatedApp /> : <AuthenticatedApp />
 }
 function UnAuthenticatedApp() {
   return (
@@ -31,7 +30,7 @@ function AuthenticatedApp() {
         <Route exact path="/postjob" component={Postjob} />
         <Route exact path="/jobs/:id" component={Jobdetails} />
         <Route exact path="/profile" component={Userprofile} />
-        <Redirect to="/" />
+        {/* <Redirect to="/" /> */}
       </Switch>
     </>
   )

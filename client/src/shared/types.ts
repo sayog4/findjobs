@@ -19,7 +19,7 @@ export interface Job {
 }
 
 export interface User {
-  _id: string
+  _id?: string
   email: String
   userName: string
   firstName: string
@@ -32,7 +32,7 @@ export interface User {
   skills: string[]
   projects: string[]
   experience: string[]
-  createdAt: Date
-  updatedAt: Date
-  appliedJobs: string[]
+  createdAt?: Date
+  updatedAt?: Date
+  appliedJobs?: string[]
 }
