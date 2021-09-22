@@ -1,9 +1,11 @@
 import express from 'express'
 import { check } from 'express-validator'
 import { authorization } from '../../utils/checkAuth'
-import { update } from './userController'
+import { update, me } from './userController'
 
 const userRouter = express.Router()
+
+userRouter.get('/me', authorization, me)
 
 userRouter.post(
   '/',

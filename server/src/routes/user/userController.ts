@@ -1,8 +1,15 @@
-import { Response } from 'express'
+import { Response, Request } from 'express'
 import { validationResult } from 'express-validator'
 import { formatError } from '../../utils/formatError'
 import User, { CreateJob } from './../../models/userModel'
 import { CustomRequest } from './../../types'
+
+async function me(req: Request, res: Response) {
+  const user = await User.findById(req.userId).select('-password')
+  console.log(user)
+
+  return res.send(user)
+}
 
 async function update(req: CustomRequest<CreateJob>, res: Response) {
   const errors = validationResult(req)
@@ -15,4 +22,4 @@ async function update(req: CustomRequest<CreateJob>, res: Response) {
   return res.status(200).send(user)
 }
 
-export { update }
+export { update, me }
