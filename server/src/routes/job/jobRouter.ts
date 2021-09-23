@@ -15,6 +15,11 @@ jobRouter.post(
     .isString()
     .isLength({ min: 6 })
     .withMessage('Title must be 6 characters long'),
+  check('companyDescription')
+    .exists()
+    .isString()
+    .isLength({ min: 10 })
+    .withMessage('company description must be 20 characters long'),
   check('companyName')
     .exists()
     .isString()

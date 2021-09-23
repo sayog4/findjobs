@@ -81,7 +81,7 @@ async function applyJob(req: CustomRequest<ApplyJob>, res: Response) {
 
     const curUser = await User.findById(req.userId)
     if (!curUser) return res.status(400).json({ message: 'User not found' })
-    console.log({ curUser })
+
     const jobApplied = {
       jobId: curJob._id,
       appliedDate: new Date(),

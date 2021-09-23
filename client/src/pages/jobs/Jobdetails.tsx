@@ -15,7 +15,6 @@ function Jobdetails({ match }: RouteComponentProps<{ id: string }>) {
   const { data, isError, isLoading, error } = useJobDetail(match.params.id)
   const { user } = useAuth()
   const { mutate, isError: isMerror, error: mError } = useApplyJob()
-  console.log({ mError, isMerror })
   let errMsg = 'Network error'
   if (isError && error?.response?.data?.message) {
     errMsg = error?.response?.data?.message
