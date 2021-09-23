@@ -1,4 +1,3 @@
-import { setupMaster } from 'cluster'
 import React from 'react'
 import { useQuery } from 'react-query'
 import { axiosInstance } from '../axios/axiosInstance'
@@ -7,10 +6,12 @@ import { User } from '../shared/types'
 
 interface Context {
   user: User | undefined
+  isLoading: boolean
 }
 
 const AuthContext = React.createContext<Context>({
   user: undefined,
+  isLoading: false,
 })
 AuthContext.displayName = 'AuthContext'
 
@@ -19,10 +20,12 @@ async function me(): Promise<User> {
 }
 
 const AuthProvider: React.FC = ({ children }) => {
-  const { data: user } = useQuery(queryKeys.me, me)
+  const { data: user, isLoading } = useQuery(queryKeys.me, me)
 
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, isLoading }}>
+      {children}
+    </AuthContext.Provider>
   )
 }
 

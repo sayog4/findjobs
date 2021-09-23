@@ -1,22 +1,12 @@
 import React from 'react'
-import {
-  Row,
-  Col,
-  Typography,
-  Divider,
-  Button,
-  Card,
-  Space,
-  Spin,
-  Tag,
-} from 'antd'
+import { Row, Col, Typography, Divider, Button, Card, Spin, Tag } from 'antd'
 import Pagelayout from '../../components/Pagelayout'
 import { Link } from 'react-router-dom'
 import { useGetAllJobs } from './hooks/useJob'
 
 const { Title, Text } = Typography
 
-const Home = () => {
+const Home: React.FC = () => {
   const { data, isError, isLoading } = useGetAllJobs()
 
   return (

@@ -94,7 +94,7 @@ function Userprofile() {
                     { type: 'email', message: 'provide valid email' },
                   ]}
                 >
-                  <Input />
+                  <Input disabled />
                 </Form.Item>
               </Col>
               <Col lg={8} sm={24}>
