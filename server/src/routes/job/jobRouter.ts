@@ -54,4 +54,10 @@ jobRouter.post(
   createJob
 )
 
+jobRouter.post(
+  '/applyjob',
+  authorization,
+  check('jobId').isMongoId().withMessage('provide valid jobid')
+)
+
 export default jobRouter

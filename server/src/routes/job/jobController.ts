@@ -4,6 +4,7 @@ import { isValidObjectId } from 'mongoose'
 import Job, { CreatejobModel } from './../../models/jobModel'
 import { CustomRequest, Params } from '../../types'
 import { formatError } from '../../utils/formatError'
+import User from '../../models/userModel'
 
 async function createJob(req: CustomRequest<CreatejobModel>, res: Response) {
   const errors = validationResult(req)
@@ -57,5 +58,34 @@ async function getJobDetails(
   }
   return res.status(200).send(job)
 }
+interface ApplyJob {
+  jobId: string
+}
+async function applyJob(req: CustomRequest<ApplyJob>, res: Response) {
+  const { jobId } = req.body
+  if (!isValidObjectId(jobId))
+    return res.status(400).json({ message: 'No data available' })
+  try {
+    const curJob = await Job.findById(jobId)
+    if (!curJob) return res.status(400).json({ message: 'No job available' })
+    const userApplied = {
+      userId: req.userId,
+      appliedDate: Date.now(),
+    }
+    curJob.appliedCandidates.push(userApplied)
+    await curJob.save()
 
-export { createJob, findJobs, getJobDetails }
+    const curUser = await User.findById(req.userId)
+    const jobApplied = {
+      jobId: curJob._id,
+      appliedDate: Date.now(),
+    }
+    curUser?.appliedJobs.push(jobApplied)
+    await curUser?.save()
+    return res.json({ message: 'Job applied Successful' })
+  } catch (error) {
+    return res.status(400).json({ error: 'something went wrong' })
+  }
+}
+
+export { createJob, findJobs, applyJob, getJobDetails }
