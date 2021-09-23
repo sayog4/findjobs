@@ -65,23 +65,29 @@ async function applyJob(req: CustomRequest<ApplyJob>, res: Response) {
   const { jobId } = req.body
   if (!isValidObjectId(jobId))
     return res.status(400).json({ message: 'No data available' })
+
   try {
     const curJob = await Job.findById(jobId)
+
     if (!curJob) return res.status(400).json({ message: 'No job available' })
     const userApplied = {
       userId: req.userId,
-      appliedDate: Date.now(),
+      appliedDate: new Date(),
     }
+
     curJob.appliedCandidates.push(userApplied)
+
     await curJob.save()
 
     const curUser = await User.findById(req.userId)
+    if (!curUser) return res.status(400).json({ message: 'User not found' })
+    console.log({ curUser })
     const jobApplied = {
       jobId: curJob._id,
-      appliedDate: Date.now(),
+      appliedDate: new Date(),
     }
-    curUser?.appliedJobs.push(jobApplied)
-    await curUser?.save()
+    curUser.appliedJobs.push(jobApplied)
+    await curUser.save()
     return res.json({ message: 'Job applied Successful' })
   } catch (error) {
     return res.status(400).json({ error: 'something went wrong' })

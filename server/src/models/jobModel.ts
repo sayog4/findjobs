@@ -16,7 +16,10 @@ export interface CreatejobModel extends Document {
   phoneNumber: string
   companyDescription: string
 }
-
+interface AppliedCandidates {
+  userId: IUser['_id']
+  appliedDate: Date
+}
 export interface IJob extends Document {
   title: string
   department: string
@@ -31,7 +34,7 @@ export interface IJob extends Document {
   email: string
   phoneNumber: string
   companyDescription: string
-  appliedCandidates: IUser['_id'][]
+  appliedCandidates: AppliedCandidates[]
   postedBy: IUser['_id']
 }
 
@@ -89,14 +92,15 @@ const jobSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
-    appliedCandidates: {
-      type: [
-        {
+    appliedCandidates: [
+      {
+        userId: {
           type: Schema.Types.ObjectId,
           ref: 'User',
         },
-      ],
-    },
+        appliedDate: Date,
+      },
+    ],
   },
   { timestamps: true }
 )

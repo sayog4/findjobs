@@ -1,18 +1,41 @@
 import React from 'react'
-import { Divider, Spin, Tag, Typography } from 'antd'
+import { useQueryClient } from 'react-query'
+import { Button, Divider, Spin, Tag, Typography } from 'antd'
 import { RouteComponentProps } from 'react-router'
 import Pagelayout from '../../components/Pagelayout'
-import { useJobDetail } from './hooks/useJob'
+import { useApplyJob, useJobDetail } from './hooks/useJob'
+import { useAuth } from '../../context/userContext'
+import { Link } from 'react-router-dom'
+import { queryKeys } from '../../reqct-query/constants'
 
 const { Title, Text, Paragraph } = Typography
 
 function Jobdetails({ match }: RouteComponentProps<{ id: string }>) {
+  const queryClient = useQueryClient()
   const { data, isError, isLoading, error } = useJobDetail(match.params.id)
-
+  const { user } = useAuth()
+  const { mutate, isError: isMerror, error: mError } = useApplyJob()
+  console.log({ mError, isMerror })
   let errMsg = 'Network error'
   if (isError && error?.response?.data?.message) {
     errMsg = error?.response?.data?.message
   }
+  if (isMerror) {
+    errMsg = mError?.response?.data?.message || mError?.response?.data?.error
+  }
+
+  const alreadyApplied = data?.appliedCandidates?.find(
+    (c) => c.userId === user?._id
+  )
+
+  function handleApplyJob() {
+    mutate(data?._id as string, {
+      onSuccess: () => {
+        queryClient.invalidateQueries([queryKeys.job, data?._id])
+      },
+    })
+  }
+
   return (
     <Pagelayout>
       {isLoading && <Spin size="large" />}
@@ -73,6 +96,33 @@ function Jobdetails({ match }: RouteComponentProps<{ id: string }>) {
             <Text strong>Posted On: </Text>
             {data.createdAt}
           </Paragraph>
+          <Divider />
+
+          <div>
+            {data.postedBy === user?._id ? (
+              <Button>
+                <Link to={`/editjob/${data._id}`}>Edit Job</Link>
+              </Button>
+            ) : alreadyApplied ? (
+              <Tag color="magenta">Already Applied</Tag>
+            ) : (
+              <>
+                <Button type="primary" onClick={handleApplyJob}>
+                  Apply Now
+                </Button>
+                {isMerror && (
+                  <Title
+                    style={{
+                      color: 'red',
+                    }}
+                    level={5}
+                  >
+                    {errMsg}
+                  </Title>
+                )}
+              </>
+            )}
+          </div>
         </>
       )}
     </Pagelayout>

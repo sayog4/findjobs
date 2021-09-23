@@ -1,7 +1,7 @@
 import express from 'express'
 import { check, param } from 'express-validator'
 import { authorization } from '../../utils/checkAuth'
-import { createJob, findJobs, getJobDetails } from './jobController'
+import { createJob, findJobs, getJobDetails, applyJob } from './jobController'
 
 const jobRouter = express.Router()
 
@@ -57,7 +57,8 @@ jobRouter.post(
 jobRouter.post(
   '/applyjob',
   authorization,
-  check('jobId').isMongoId().withMessage('provide valid jobid')
+  check('jobId').isMongoId().withMessage('provide valid jobid'),
+  applyJob
 )
 
 export default jobRouter

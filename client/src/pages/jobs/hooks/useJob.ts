@@ -26,3 +26,13 @@ async function getJobDetail(id: string): Promise<Job> {
 export function useJobDetail(id: string) {
   return useQuery<Job, any>([queryKeys.job, id], () => getJobDetail(id))
 }
+
+async function applyJob(jobId: string) {
+  await axiosInstance.post('/api/job/applyjob', { jobId })
+}
+
+export function useApplyJob() {
+  return useMutation<void, any, string, unknown>((jobId: string) =>
+    applyJob(jobId)
+  )
+}

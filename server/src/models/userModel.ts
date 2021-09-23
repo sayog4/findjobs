@@ -17,6 +17,11 @@ export interface CreateJob extends Document {
   experience: string[]
 }
 
+interface AppliedJobs {
+  jobId: IJob['_id']
+  appliedDate: Date
+}
+
 export interface IUser extends Document {
   email: String
   password: string
@@ -31,7 +36,7 @@ export interface IUser extends Document {
   skills?: string[]
   projects?: string[]
   experience?: string[]
-  appliedJobs: IJob['_id'][]
+  appliedJobs: AppliedJobs[]
 }
 export interface SigninModel extends Document {
   email: String
@@ -99,15 +104,16 @@ const userSchema = new Schema(
       type: [],
       default: [''],
     },
-    appliedJobs: {
-      type: [
-        {
+
+    appliedJobs: [
+      {
+        userId: {
           type: Schema.Types.ObjectId,
           ref: 'Job',
         },
-      ],
-      required: true,
-    },
+        appliedDate: Date,
+      },
+    ],
   },
   { timestamps: true }
 )
