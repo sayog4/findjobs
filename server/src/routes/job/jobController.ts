@@ -94,4 +94,9 @@ async function applyJob(req: CustomRequest<ApplyJob>, res: Response) {
   }
 }
 
-export { createJob, findJobs, applyJob, getJobDetails }
+async function updateJob(req: CustomRequest<CreatejobModel>, res: Response) {
+  await Job.findByIdAndUpdate(req.body._id, req.body)
+  return res.json({ message: 'updated!! successfully' })
+}
+
+export { createJob, findJobs, applyJob, getJobDetails, updateJob }
