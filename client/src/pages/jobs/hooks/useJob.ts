@@ -36,3 +36,11 @@ export function useApplyJob() {
     applyJob(jobId)
   )
 }
+
+async function updateJob(data: Job) {
+  await axiosInstance.patch('/api/job/updatejob', data)
+}
+
+export function useUpdateJob() {
+  return useMutation((data: Job) => updateJob(data))
+}

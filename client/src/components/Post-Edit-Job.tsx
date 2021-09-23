@@ -24,6 +24,7 @@ interface PostEditProps {
   changeTab: (value: string) => void
   edit?: boolean
   job?: Job
+  isUpdating?: boolean
 }
 
 const PostEditJob: React.FC<PostEditProps> = ({
@@ -33,7 +34,8 @@ const PostEditJob: React.FC<PostEditProps> = ({
   finalFormFinish,
   changeTab,
   job,
-  edit,
+  edit = false,
+  isUpdating = false,
 }) => {
   return (
     <Tabs defaultActiveKey="0" activeKey={activeTab}>
@@ -63,7 +65,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
                 name="email"
                 rules={[{ required: true }, { type: 'email' }]}
               >
-                <Input />
+                <Input disabled={edit} />
               </Form.Item>
             </Col>
             <Col lg={8} sm={24}>
@@ -217,7 +219,11 @@ const PostEditJob: React.FC<PostEditProps> = ({
           </Row>
           <Space size="middle">
             <Button onClick={() => changeTab('0')}>Previous</Button>
-            <Button htmlType="submit" type="primary">
+            <Button
+              htmlType="submit"
+              type="primary"
+              disabled={isUpdating && isUpdating}
+            >
               {edit ? 'Apply Changes' : 'Post Job'}
             </Button>
           </Space>
