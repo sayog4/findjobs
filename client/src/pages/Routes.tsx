@@ -1,6 +1,7 @@
 import { Route, Switch } from 'react-router-dom'
 import PrivateRoute from '../components/PrivateRoute'
 import { useAuth } from '../context/userContext'
+import Appliedjobs from './jobs/Appliedjobs'
 import Editjob from './jobs/Editjob'
 import Home from './jobs/Home'
 import Jobdetails from './jobs/Jobdetails'
@@ -30,6 +31,13 @@ function Routes() {
           exact
           path="/postjob"
           component={Postjob}
+        />
+        <PrivateRoute
+          isLoading={isLoading}
+          isAuthenticated={!!user}
+          exact
+          path="/appliedjobs"
+          component={Appliedjobs}
         />
         <PrivateRoute
           isLoading={isLoading}

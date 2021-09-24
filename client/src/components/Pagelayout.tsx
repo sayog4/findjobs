@@ -5,6 +5,7 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   PlusOutlined,
+  PlusSquareOutlined,
   UserOutlined,
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
@@ -43,6 +44,9 @@ function Pagelayout({ children }: Props) {
           </Menu.Item>
           <Menu.Item key="/profile" icon={<UserOutlined />}>
             <Link to="/profile">Profile</Link>
+          </Menu.Item>
+          <Menu.Item key="/appliedjobs" icon={<PlusSquareOutlined />}>
+            <Link to="/appliedjobs">Applied Jobs</Link>
           </Menu.Item>
           <Menu.Item key="/postjob" icon={<PlusOutlined />}>
             <Link to="/postjob">Post Job</Link>

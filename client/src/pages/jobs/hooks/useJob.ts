@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from 'react-query'
 import { AxiosResponse } from 'axios'
 import { axiosInstance } from '../../../axios/axiosInstance'
-import { Job } from '../../../shared/types'
+import { AppliedJobs, Job } from '../../../shared/types'
 import { queryKeys } from './../../../reqct-query/constants'
 
 async function postJob(data: Job) {
@@ -43,4 +43,11 @@ async function updateJob(data: Job) {
 
 export function useUpdateJob() {
   return useMutation((data: Job) => updateJob(data))
+}
+
+async function getAppliedJobs(): Promise<AppliedJobs> {
+  return (await axiosInstance.get('/api/job/appliedjobs')).data
+}
+export function useGetAppliedJobs() {
+  return useQuery<AppliedJobs, any>(queryKeys.appliedJobs, getAppliedJobs)
 }

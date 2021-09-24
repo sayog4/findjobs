@@ -36,3 +36,17 @@ export interface User {
   updatedAt?: Date
   appliedJobs?: string[]
 }
+
+export interface AppliedJobs {
+  _id: string
+  appliedJobs: [
+    {
+      jobId: {
+        _id: string
+        title: string
+        companyName: string
+      }
+      appliedDate: Date
+    }
+  ]
+}
