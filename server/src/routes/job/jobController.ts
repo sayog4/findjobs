@@ -99,4 +99,12 @@ async function updateJob(req: CustomRequest<CreatejobModel>, res: Response) {
   return res.json({ message: 'updated!! successfully' })
 }
 
-export { createJob, findJobs, applyJob, getJobDetails, updateJob }
+async function appliedJobs(req: Request, res: Response) {
+  const jobInfo = await User.findById(req.userId)
+    .populate('appliedJobs.jobId', 'title companyName')
+    .select('appliedJobs')
+
+  return res.send(jobInfo)
+}
+
+export { createJob, findJobs, applyJob, getJobDetails, updateJob, appliedJobs }

@@ -107,7 +107,7 @@ const userSchema = new Schema(
 
     appliedJobs: [
       {
-        userId: {
+        jobId: {
           type: Schema.Types.ObjectId,
           ref: 'Job',
         },

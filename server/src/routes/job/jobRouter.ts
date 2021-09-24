@@ -7,11 +7,13 @@ import {
   getJobDetails,
   applyJob,
   updateJob,
+  appliedJobs,
 } from './jobController'
 
 const jobRouter = express.Router()
 
 jobRouter.get('/getalljobs', findJobs)
+jobRouter.get('/appliedjobs', authorization, appliedJobs)
 jobRouter.get('/:id', getJobDetails)
 
 jobRouter.post(
