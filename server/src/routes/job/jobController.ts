@@ -107,4 +107,20 @@ async function appliedJobs(req: Request, res: Response) {
   return res.send(jobInfo)
 }
 
-export { createJob, findJobs, applyJob, getJobDetails, updateJob, appliedJobs }
+async function postedJobs(req: Request, res: Response) {
+  const jobs = await Job.find({ postedBy: req.userId })
+    .populate('appliedCandidates.userId', 'firstName lastName appliedJobs')
+    .select('title companyName createdAt appliedCandidates')
+
+  return res.send(jobs)
+}
+
+export {
+  createJob,
+  findJobs,
+  applyJob,
+  getJobDetails,
+  updateJob,
+  appliedJobs,
+  postedJobs,
+}

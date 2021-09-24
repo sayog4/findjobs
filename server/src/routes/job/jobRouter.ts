@@ -8,12 +8,14 @@ import {
   applyJob,
   updateJob,
   appliedJobs,
+  postedJobs,
 } from './jobController'
 
 const jobRouter = express.Router()
 
 jobRouter.get('/getalljobs', findJobs)
 jobRouter.get('/appliedjobs', authorization, appliedJobs)
+jobRouter.get('/postedjobs', postedJobs)
 jobRouter.get('/:id', getJobDetails)
 
 jobRouter.post(
