@@ -15,7 +15,7 @@ const jobRouter = express.Router()
 
 jobRouter.get('/getalljobs', findJobs)
 jobRouter.get('/appliedjobs', authorization, appliedJobs)
-jobRouter.get('/postedjobs', postedJobs)
+jobRouter.get('/postedjobs', authorization, postedJobs)
 jobRouter.get('/:id', getJobDetails)
 
 jobRouter.post(

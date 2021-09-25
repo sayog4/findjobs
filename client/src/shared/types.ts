@@ -50,3 +50,26 @@ export interface AppliedJobs {
     }
   ]
 }
+
+export interface PostedJobs {
+  _id: string
+  title: string
+  companyName: string
+  appliedCandidates: [
+    {
+      userId: {
+        _id: string
+        firstName: string
+        lastName: string
+        appliedJobs: [
+          {
+            jobId: string
+            appliedDate: Date
+          }
+        ]
+      }
+      appliedDate: Date
+    }
+  ]
+  createdAt: Date
+}

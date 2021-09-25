@@ -5,6 +5,7 @@ import Appliedjobs from './jobs/Appliedjobs'
 import Editjob from './jobs/Editjob'
 import Home from './jobs/Home'
 import Jobdetails from './jobs/Jobdetails'
+import Postedjob from './jobs/Postedjob'
 import Postjob from './jobs/PostJob'
 import Login from './user/Login'
 import Register from './user/Register'
@@ -38,6 +39,13 @@ function Routes() {
           exact
           path="/appliedjobs"
           component={Appliedjobs}
+        />
+        <PrivateRoute
+          isLoading={isLoading}
+          isAuthenticated={!!user}
+          exact
+          path="/postedjobs"
+          component={Postedjob}
         />
         <PrivateRoute
           isLoading={isLoading}

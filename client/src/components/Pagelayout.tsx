@@ -1,6 +1,7 @@
 import React from 'react'
 import { Layout, Menu, Typography } from 'antd'
 import {
+  CheckOutlined,
   HomeOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -50,6 +51,9 @@ function Pagelayout({ children }: Props) {
           </Menu.Item>
           <Menu.Item key="/postjob" icon={<PlusOutlined />}>
             <Link to="/postjob">Post Job</Link>
+          </Menu.Item>
+          <Menu.Item key="/postedjobs" icon={<CheckOutlined />}>
+            <Link to="/postedjobs">Posted Job</Link>
           </Menu.Item>
         </Menu>
       </Sider>

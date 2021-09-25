@@ -3,4 +3,5 @@ export const queryKeys = {
   jobs: 'jobs',
   job: 'job',
   appliedJobs: 'appliedJobs',
+  postedJobs: 'postedJobs',
 }
