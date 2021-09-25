@@ -9,6 +9,7 @@ import Postedjob from './jobs/Postedjob'
 import Postjob from './jobs/PostJob'
 import Login from './user/Login'
 import Register from './user/Register'
+import Userinfo from './user/Userinfo'
 import Userprofile from './user/Userprofile'
 
 function Routes() {
@@ -53,6 +54,13 @@ function Routes() {
           exact
           path="/jobs/:id"
           component={Jobdetails}
+        />
+        <PrivateRoute
+          isLoading={isLoading}
+          isAuthenticated={!!user}
+          exact
+          path="/users/:id"
+          component={Userinfo}
         />
         <PrivateRoute
           isLoading={isLoading}

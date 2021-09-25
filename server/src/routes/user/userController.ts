@@ -32,7 +32,8 @@ async function getUserInfo(
   res: Response
 ) {
   if (!isValidObjectId(req.params.userId))
-    return res.status(400).json({ message: 'Invalid userId' })
+    return res.status(400).json({ message: 'no data available' })
+
   const user = await User.findById(req.params.userId).select(
     '-password -appliedJobs'
   )

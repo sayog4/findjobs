@@ -23,7 +23,7 @@ export interface User {
   email: String
   userName: string
   firstName: string
-  lastname: string
+  lastName: string
   mobileNumber: string
   portfolio: string
   about: string
