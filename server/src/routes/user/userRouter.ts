@@ -1,7 +1,7 @@
 import express from 'express'
 import { check } from 'express-validator'
 import { authorization } from '../../utils/checkAuth'
-import { update, me } from './userController'
+import { update, me, getUserInfo } from './userController'
 
 const userRouter = express.Router()
 
@@ -48,5 +48,7 @@ userRouter.post(
     .withMessage('provide experience details'),
   update
 )
+
+userRouter.get('/:userId', authorization, getUserInfo)
 
 export default userRouter

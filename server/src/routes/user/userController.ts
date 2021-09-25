@@ -1,8 +1,9 @@
 import { Response, Request } from 'express'
 import { validationResult } from 'express-validator'
+import { isValidObjectId } from 'mongoose'
 import { formatError } from '../../utils/formatError'
 import User, { CreateJob } from './../../models/userModel'
-import { CustomRequest } from './../../types'
+import { CustomRequest, Params } from './../../types'
 
 async function me(req: Request, res: Response) {
   const user = await User.findById(req.userId).select('-password')
@@ -22,4 +23,22 @@ async function update(req: CustomRequest<CreateJob>, res: Response) {
   return res.status(200).send(user)
 }
 
-export { update, me }
+interface ReqParams extends Params {
+  userId: string
+}
+
+async function getUserInfo(
+  req: CustomRequest<any, any, ReqParams>,
+  res: Response
+) {
+  if (!isValidObjectId(req.params.userId))
+    return res.status(400).json({ message: 'Invalid userId' })
+  const user = await User.findById(req.params.userId).select(
+    '-password -appliedJobs'
+  )
+  if (!user) res.status(400).json({ message: 'user not found' })
+
+  return res.send(user)
+}
+
+export { update, me, getUserInfo }
