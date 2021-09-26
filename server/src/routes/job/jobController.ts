@@ -2,7 +2,7 @@ import { Response, Request } from 'express'
 import { validationResult } from 'express-validator'
 import { isValidObjectId } from 'mongoose'
 import Job, { CreatejobModel } from './../../models/jobModel'
-import { CustomRequest, Params } from '../../types'
+import { CustomRequest, Params, Query } from '../../types'
 import { formatError } from '../../utils/formatError'
 import User from '../../models/userModel'
 
@@ -35,9 +35,23 @@ async function createJob(req: CustomRequest<CreatejobModel>, res: Response) {
   const job = await Job.create(newJobData)
   return res.status(201).send(job)
 }
-
-async function findJobs(req: Request, res: Response) {
-  const jobs = await Job.find({})
+interface SearchQuery extends Query {
+  search: string
+}
+async function findJobs(
+  req: CustomRequest<any, SearchQuery, any>,
+  res: Response
+) {
+  const keyword = req.query.search
+    ? {
+        title: {
+          $regex: req.query.search,
+          $options: 'i',
+        },
+      }
+    : {}
+  const jobs = await Job.find({ ...keyword })
+  if (!jobs.length) return res.json({ message: 'unable to find any job' })
   return res.status(200).send(jobs)
 }
 
