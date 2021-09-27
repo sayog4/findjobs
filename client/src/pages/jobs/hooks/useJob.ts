@@ -18,23 +18,23 @@ export function useGetAllJobs() {
   return useQuery(queryKeys.jobs, getAllJobs)
 }
 */
-interface QueryParams {
-  pageParams?: number
-  query?: string
-}
+
 async function getAllJobs(pageParam: any, query = '') {
+  console.log({ query })
   let url: string
-  if (query?.trim()) {
+  if (query.trim()) {
     url = `/api/job/getalljobs/?search=${query}&page=${pageParam}`
+  } else {
+    url = `/api/job/getalljobs/?page=${pageParam}`
   }
-  url = `/api/job/getalljobs/?page=${pageParam}`
+
   const results = (await axiosInstance.get(url)).data
   return { results, nextPage: pageParam + 1, totalPages: results.totalPages }
 }
 export function useGetAllJobs(query: string) {
   return useInfiniteQuery(
-    queryKeys.jobs,
-    ({ pageParam = 1 }) => getAllJobs(pageParam),
+    [queryKeys.jobs, query],
+    ({ pageParam = 1 }) => getAllJobs(pageParam, query),
     {
       getNextPageParam: (lastPage) =>
         lastPage.nextPage <= lastPage.totalPages

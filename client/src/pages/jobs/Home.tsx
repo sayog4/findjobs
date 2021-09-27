@@ -6,12 +6,14 @@ import Pagelayout from '../../components/Pagelayout'
 import { Link } from 'react-router-dom'
 import { useGetAllJobs } from './hooks/useJob'
 import { Job } from '../../shared/types'
+import { useSearchContext } from '../../context/searchContext'
 
 const { Title, Text } = Typography
 
 const Home: React.FC = () => {
+  const { search } = useSearchContext()
   const { data, fetchNextPage, hasNextPage, isLoading, isFetching, isError } =
-    useGetAllJobs('')
+    useGetAllJobs(search)
 
   return (
     <Pagelayout>

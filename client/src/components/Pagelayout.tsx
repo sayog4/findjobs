@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, Menu, Typography } from 'antd'
+import { Layout, Menu, Typography, Input } from 'antd'
 import {
   CheckOutlined,
   HomeOutlined,
@@ -10,9 +10,11 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
+import { useSearchContext } from '../context/searchContext'
 
 const { Header, Sider, Content } = Layout
 const { Title } = Typography
+const { Search } = Input
 
 interface Props {
   children: React.ReactNode
@@ -20,6 +22,7 @@ interface Props {
 
 function Pagelayout({ children }: Props) {
   const [collapsed, setCollapsed] = React.useState(false)
+  const { setSearchQuery } = useSearchContext()
 
   function toggle() {
     setCollapsed((prev) => !prev)
@@ -78,7 +81,11 @@ function Pagelayout({ children }: Props) {
                 }
               )}
             </div>
-            <div>Search bar</div>
+
+            <div className="flex">
+              <Search onSearch={(value) => setSearchQuery(value)} />
+            </div>
+
             <div>User info</div>
           </div>
         </Header>
