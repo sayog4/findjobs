@@ -37,11 +37,14 @@ async function createJob(req: CustomRequest<CreatejobModel>, res: Response) {
 }
 interface SearchQuery extends Query {
   search: string
+  page: string
 }
 async function findJobs(
   req: CustomRequest<any, SearchQuery, any>,
   res: Response
 ) {
+  const pageSize = 5
+  const page = Number(req.query.page) || 1
   const keyword = req.query.search
     ? {
         title: {
@@ -50,9 +53,17 @@ async function findJobs(
         },
       }
     : {}
+  const count = await Job.countDocuments({ ...keyword })
   const jobs = await Job.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
+    .sort({ createdAt: -1 })
   if (!jobs.length) return res.json({ message: 'unable to find any job' })
-  return res.status(200).send(jobs)
+  const result = {
+    jobs,
+    totalPages: Math.ceil(count / pageSize),
+  }
+  return res.status(200).send(result)
 }
 
 interface ReqParams extends Params {

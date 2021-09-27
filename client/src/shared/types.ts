@@ -17,6 +17,10 @@ export interface Job {
   postedBy?: any
   createdAt?: Date
 }
+export interface PaginatedJobs {
+  jobs: Job[]
+  totalPages: number
+}
 
 export interface User {
   _id?: string

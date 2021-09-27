@@ -1,24 +1,42 @@
 import React from 'react'
+import InfiniteScroll from 'react-infinite-scroller'
+import { LoadingOutlined } from '@ant-design/icons'
 import { Row, Col, Typography, Divider, Button, Card, Spin, Tag } from 'antd'
 import Pagelayout from '../../components/Pagelayout'
 import { Link } from 'react-router-dom'
 import { useGetAllJobs } from './hooks/useJob'
+import { Job } from '../../shared/types'
 
 const { Title, Text } = Typography
 
 const Home: React.FC = () => {
-  const { data, isError, isLoading } = useGetAllJobs()
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetching, isError } =
+    useGetAllJobs('')
 
   return (
     <Pagelayout>
       {isLoading && <Spin size="large" />}
-      <Row gutter={[16, 24]}>
-        {isError && (
-          <Title level={3} style={{ color: 'red' }}>
-            Network error please make sure you are connected to internet
-          </Title>
+
+      {isError && (
+        <Title level={3} style={{ color: 'red' }}>
+          Network error please make sure you are connected to internet
+        </Title>
+      )}
+      <InfiniteScroll loadMore={() => fetchNextPage()} hasMore={hasNextPage}>
+        <Scrollable data={data} />
+        {isFetching && (
+          <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
         )}
-        {data?.data.map((job) => (
+      </InfiniteScroll>
+    </Pagelayout>
+  )
+}
+
+function Scrollable({ data }: any) {
+  return (
+    <Row gutter={[16, 24]}>
+      {data?.pages.map((pageData: any) =>
+        pageData.results.jobs.map((job: Job) => (
           <Col lg={12} sm={24} key={job._id}>
             <Card>
               <Title level={4}>{job.title}</Title>
@@ -52,9 +70,9 @@ const Home: React.FC = () => {
               </div>
             </Card>
           </Col>
-        ))}
-      </Row>
-    </Pagelayout>
+        ))
+      )}
+    </Row>
   )
 }
 export default Home

@@ -1,5 +1,4 @@
-import { useMutation, useQuery } from 'react-query'
-import { AxiosResponse } from 'axios'
+import { useInfiniteQuery, useMutation, useQuery } from 'react-query'
 import { axiosInstance } from '../../../axios/axiosInstance'
 import { AppliedJobs, Job, PostedJobs } from '../../../shared/types'
 import { queryKeys } from './../../../reqct-query/constants'
@@ -11,12 +10,38 @@ async function postJob(data: Job) {
 export function usePostJob() {
   return useMutation((data: Job) => postJob(data))
 }
-
-async function getAllJobs(): Promise<AxiosResponse<Job[]>> {
+/*
+async function getAllJobs(): Promise<AxiosResponse<PaginatedJobs>> {
   return axiosInstance.get('/api/job/getalljobs')
 }
 export function useGetAllJobs() {
   return useQuery(queryKeys.jobs, getAllJobs)
+}
+*/
+interface QueryParams {
+  pageParams?: number
+  query?: string
+}
+async function getAllJobs(pageParam: any, query = '') {
+  let url: string
+  if (query?.trim()) {
+    url = `/api/job/getalljobs/?search=${query}&page=${pageParam}`
+  }
+  url = `/api/job/getalljobs/?page=${pageParam}`
+  const results = (await axiosInstance.get(url)).data
+  return { results, nextPage: pageParam + 1, totalPages: results.totalPages }
+}
+export function useGetAllJobs(query: string) {
+  return useInfiniteQuery(
+    queryKeys.jobs,
+    ({ pageParam = 1 }) => getAllJobs(pageParam),
+    {
+      getNextPageParam: (lastPage) =>
+        lastPage.nextPage <= lastPage.totalPages
+          ? lastPage.nextPage
+          : undefined,
+    }
+  )
 }
 
 async function getJobDetail(id: string): Promise<Job> {
