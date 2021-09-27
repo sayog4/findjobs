@@ -1,8 +1,9 @@
 import React from 'react'
-import { Layout, Menu, Typography, Input } from 'antd'
+import { Layout, Menu, Typography, Input, Button } from 'antd'
 import {
   CheckOutlined,
   HomeOutlined,
+  LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   PlusOutlined,
@@ -11,9 +12,11 @@ import {
 } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { useSearchContext } from '../context/searchContext'
+import { useAuth } from '../context/userContext'
+import { useAuth as useAuthentication } from '../hooks/useAuth'
 
 const { Header, Sider, Content } = Layout
-const { Title } = Typography
+const { Title, Text } = Typography
 const { Search } = Input
 
 interface Props {
@@ -23,9 +26,16 @@ interface Props {
 function Pagelayout({ children }: Props) {
   const [collapsed, setCollapsed] = React.useState(false)
   const { setSearchQuery } = useSearchContext()
+  const { user } = useAuth()
+  const { logOut } = useAuthentication()
 
   function toggle() {
     setCollapsed((prev) => !prev)
+  }
+
+  async function handleLogOut() {
+    await logOut()
+    window.location.reload()
   }
 
   return (
@@ -58,6 +68,19 @@ function Pagelayout({ children }: Props) {
           <Menu.Item key="/postedjobs" icon={<CheckOutlined />}>
             <Link to="/postedjobs">Posted Job</Link>
           </Menu.Item>
+          <Menu.Item
+            onClick={handleLogOut}
+            icon={<LogoutOutlined />}
+            key="/logout"
+          >
+            <Text
+              style={{
+                color: 'rgba(255, 255, 255, 0.65)',
+              }}
+            >
+              LogOut
+            </Text>
+          </Menu.Item>
         </Menu>
       </Sider>
       <Layout className="site-layout">
@@ -86,7 +109,11 @@ function Pagelayout({ children }: Props) {
               <Search onSearch={(value) => setSearchQuery(value)} />
             </div>
 
-            <div>User info</div>
+            <div className="flex">
+              <Link to="/profile" style={{ marginRight: 15 }}>
+                <Title level={5}>{user?.userName}</Title>
+              </Link>
+            </div>
           </div>
         </Header>
         <Content

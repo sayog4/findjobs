@@ -20,7 +20,6 @@ export function useGetAllJobs() {
 */
 
 async function getAllJobs(pageParam: any, query = '') {
-  console.log({ query })
   let url: string
   if (query.trim()) {
     url = `/api/job/getalljobs/?search=${query}&page=${pageParam}`

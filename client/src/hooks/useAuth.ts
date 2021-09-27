@@ -5,7 +5,7 @@ const SERVER_ERROR = 'There was an error contacting the server.'
 interface UseAuth {
   signUp: (email: string, password: string, userName: string) => Promise<any>
   logIn: (email: string, password: string) => Promise<any>
-  // logOut: () => void
+  logOut: () => void
 }
 interface Data {
   email: string
@@ -62,5 +62,9 @@ export function useAuth(): UseAuth {
     }
     return response?.errors
   }
-  return { logIn, signUp }
+
+  function logOut() {
+    return axiosInstance.get('/api/auth/logout')
+  }
+  return { logIn, signUp, logOut }
 }
