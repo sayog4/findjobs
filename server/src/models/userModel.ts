@@ -2,7 +2,7 @@ import { Schema, model, Document } from 'mongoose'
 import { IJob } from './jobModel'
 
 export interface CreateJob extends Document {
-  email: String
+  email: string
   password: string
   userName: string
   firstName: string
@@ -23,7 +23,7 @@ interface AppliedJobs {
 }
 
 export interface IUser extends Document {
-  email: String
+  email: string
   password: string
   userName: string
   firstName?: string
@@ -32,6 +32,7 @@ export interface IUser extends Document {
   portfolio?: string
   about?: string
   address?: string
+  resetPasswordLink?: string
   education?: string[]
   skills?: string[]
   projects?: string[]
@@ -39,13 +40,13 @@ export interface IUser extends Document {
   appliedJobs: AppliedJobs[]
 }
 export interface SigninModel extends Document {
-  email: String
+  email: string
   password: string
   userName: string
 }
 
 export interface LoginModel extends Document {
-  email: String
+  email: string
   password: string
 }
 
@@ -104,7 +105,10 @@ const userSchema = new Schema(
       type: [],
       default: [''],
     },
-
+    resetPasswordLink: {
+      type: String,
+      default: '',
+    },
     appliedJobs: [
       {
         jobId: {

@@ -7,6 +7,7 @@ import Home from './jobs/Home'
 import Jobdetails from './jobs/Jobdetails'
 import Postedjob from './jobs/Postedjob'
 import Postjob from './jobs/PostJob'
+import Activate from './user/Activate'
 import Login from './user/Login'
 import Register from './user/Register'
 import Userinfo from './user/Userinfo'
@@ -20,6 +21,11 @@ function Routes() {
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
+        <Route
+          exact
+          path="/auth/account/activate/:token"
+          component={Activate}
+        />
         <PrivateRoute
           isLoading={isLoading}
           isAuthenticated={!!user}

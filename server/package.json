@@ -8,6 +8,7 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.4.7",
     "@types/cookie-parser": "^1.4.2",
     "@types/jsonwebtoken": "^8.5.5",
     "bcryptjs": "^2.4.3",

@@ -1,12 +1,12 @@
 import express from 'express'
 import { check } from 'express-validator'
 import { authorization } from '../../utils/checkAuth'
-import { signUp, logIn, logOut } from './authController'
+import { signUp, logIn, logOut, preSignUp } from './authController'
 
 const authRouter = express.Router()
 
 authRouter.post(
-  '/signup',
+  '/presignup',
   check('email').exists().isEmail().withMessage('Provide valid email address'),
   check('password')
     .exists()
@@ -18,6 +18,11 @@ authRouter.post(
     .withMessage('Username must be string')
     .isLength({ min: 4 })
     .withMessage('Username must be 5 characters long'),
+  preSignUp
+)
+authRouter.post(
+  '/signup',
+  check('token').exists().isString().withMessage('Provide token'),
   signUp
 )
 

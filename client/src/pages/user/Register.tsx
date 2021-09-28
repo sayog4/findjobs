@@ -16,6 +16,7 @@ function Register() {
   const auth = useAuth()
   const [errors, setErrors] = React.useState<Err>({})
   async function onFinish(values: any) {
+    setErrors({})
     if (values.password !== values.confirmPassword) {
       setErrors({
         password: 'password do not match',
@@ -23,7 +24,7 @@ function Register() {
       })
       return
     }
-    const errors = await auth.signUp(
+    const errors = await auth.preSignUp(
       values.email,
       values.password,
       values.userName

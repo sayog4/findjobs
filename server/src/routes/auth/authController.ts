@@ -1,15 +1,56 @@
 import { Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
+import { decode, Secret, sign, verify } from 'jsonwebtoken'
+
 import User, { LoginModel } from '../../models/userModel'
 import { validationResult } from 'express-validator'
 import { formatError } from '../../utils/formatError'
 import { generateToken } from '../../utils/jwtToken'
 import { CustomRequest } from '../../types'
 import { SigninModel } from './../../models/userModel'
+import { decodeToken } from '../../utils/decodeToken'
+import { signUpLinkEmail } from '../../utils/sgMail'
 
 const { genSalt, hash, compare } = bcrypt
 
-async function signUp(req: CustomRequest<SigninModel>, res: Response) {
+async function signUp(req: CustomRequest<{ token: any }>, res: Response) {
+  try {
+    const result = verify(req.body.token, process.env.JWT_PRE_SIGNUP as Secret)
+    console.log({ result })
+    if (!result)
+      return res.status(400).json({
+        message: 'Token is invalid. Try filling registration form again!!',
+      })
+
+    const decodedResult = decodeToken(req.body.token)
+    const { email, userName, password } = decodedResult
+    const salt = await genSalt(10)
+    const hashedPw = await hash(password, salt)
+    const data = {
+      userName,
+      email,
+      password: hashedPw,
+    }
+    const user = await User.create(data)
+    const token = generateToken(user)
+
+    return res
+      .cookie('access_token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        domain: '',
+      })
+      .status(201)
+      .json({ message: 'signUp successful.' })
+  } catch (error) {
+    // throw new Error(`Token is invalid`)
+    return res.status(400).json({
+      error: `Token is invalid. Try filling registration form again!!`,
+    })
+  }
+}
+
+async function preSignUp(req: CustomRequest<SigninModel>, res: Response) {
   const errors = validationResult(req)
   // express- validator error formatting
 
@@ -21,30 +62,24 @@ async function signUp(req: CustomRequest<SigninModel>, res: Response) {
   const { email, password, userName } = req.body
 
   // check if email is in use
-  const result = await User.findOne({ email })
+  const result = await User.findOne({ email: email })
 
   if (result)
     return res
       .status(400)
       .json({ message: 'Email already exists. Try logging in.' })
 
-  const salt = await genSalt(10)
-  const hashedPw = await hash(password, salt)
-  const data = {
-    userName,
-    email,
-    password: hashedPw,
-  }
-  const user = await User.create(data)
-  const token = generateToken(user)
+  const token = sign(
+    { userName, email, password },
+    process.env.JWT_PRE_SIGNUP as Secret,
+    {
+      expiresIn: '15m',
+    }
+  )
 
-  return res
-    .cookie('access_token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-    })
-    .status(201)
-    .json({ message: 'Sign up successful.' })
+  // send email with token link
+  signUpLinkEmail(token, email)
+  return res.json({ message: 'Check your email for account activation link.' })
 }
 
 async function logIn(req: CustomRequest<LoginModel>, res: Response) {
@@ -71,7 +106,7 @@ async function logIn(req: CustomRequest<LoginModel>, res: Response) {
   return res
     .cookie('access_token', token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       domain: '',
     })
     .status(200)
@@ -85,4 +120,4 @@ function logOut(req: Request, res: Response) {
     .json({ message: 'Successfully logged out' })
 }
 
-export { signUp, logIn, logOut }
+export { signUp, logIn, logOut, preSignUp }
