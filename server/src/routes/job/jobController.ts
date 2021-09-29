@@ -5,6 +5,7 @@ import Job, { CreatejobModel } from './../../models/jobModel'
 import { CustomRequest, Params, Query } from '../../types'
 import { formatError } from '../../utils/formatError'
 import User from '../../models/userModel'
+import { emailAfterAppliedToJob } from '../../utils/sgMail'
 
 async function createJob(req: CustomRequest<CreatejobModel>, res: Response) {
   const errors = validationResult(req)
@@ -113,6 +114,13 @@ async function applyJob(req: CustomRequest<ApplyJob>, res: Response) {
     }
     curUser.appliedJobs.push(jobApplied)
     await curUser.save()
+
+    emailAfterAppliedToJob(
+      curJob.companyName,
+      curJob.title,
+      curUser.userName,
+      curUser.email
+    )
     return res.json({ message: 'Job applied Successful' })
   } catch (error) {
     return res.status(400).json({ error: 'something went wrong' })

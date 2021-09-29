@@ -11,7 +11,7 @@ export interface CreatejobModel extends Document {
   fullDescription: string
   minimumQualification: string
   skillsRequired: string
-  company: string
+  companyName: string
   email: string
   phoneNumber: string
   companyDescription: string
@@ -30,7 +30,7 @@ export interface IJob extends Document {
   fullDescription: string
   minimumQualification: string
   skillsRequired: string
-  company: string
+  companyName: string
   email: string
   phoneNumber: string
   companyDescription: string
