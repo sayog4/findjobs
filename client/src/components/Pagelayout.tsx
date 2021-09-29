@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, Menu, Typography, Input } from 'antd'
+import { Layout, Menu, Typography, Input, Drawer } from 'antd'
 import {
   CheckOutlined,
   HomeOutlined,
@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import { useSearchContext } from '../context/searchContext'
 import { useAuth } from '../context/userContext'
 import { useAuth as useAuthentication } from '../hooks/useAuth'
+import { unstable_renderSubtreeIntoContainer } from 'react-dom'
 
 const { Header, Sider, Content } = Layout
 const { Title, Text } = Typography
@@ -24,7 +25,7 @@ interface Props {
 }
 
 function Pagelayout({ children }: Props) {
-  const [collapsed, setCollapsed] = React.useState(true)
+  const [collapsed, setCollapsed] = React.useState(false)
   const { setSearchQuery } = useSearchContext()
   const { user } = useAuth()
   const { logOut } = useAuthentication()
@@ -41,6 +42,7 @@ function Pagelayout({ children }: Props) {
   return (
     <Layout>
       <Sider
+        className="hideOnMobile"
         trigger={null}
         collapsible
         collapsed={collapsed}
@@ -49,42 +51,20 @@ function Pagelayout({ children }: Props) {
         <Link to="/">
           <Title className="logo">{collapsed ? 'FJ' : 'FindJobs'}</Title>
         </Link>
-
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={[window.location.pathname]}
-        >
-          <Menu.Item key="/" icon={<HomeOutlined />}>
-            <Link to="/">Home</Link>
-          </Menu.Item>
-          <Menu.Item key="/profile" icon={<UserOutlined />}>
-            <Link to="/profile">Profile</Link>
-          </Menu.Item>
-          <Menu.Item key="/appliedjobs" icon={<PlusSquareOutlined />}>
-            <Link to="/appliedjobs">Applied Jobs</Link>
-          </Menu.Item>
-          <Menu.Item key="/postjob" icon={<PlusOutlined />}>
-            <Link to="/postjob">Post Job</Link>
-          </Menu.Item>
-          <Menu.Item key="/postedjobs" icon={<CheckOutlined />}>
-            <Link to="/postedjobs">Posted Job</Link>
-          </Menu.Item>
-          <Menu.Item
-            onClick={handleLogOut}
-            icon={<LogoutOutlined />}
-            key="/logout"
-          >
-            <Text
-              style={{
-                color: 'rgba(255, 255, 255, 0.65)',
-              }}
-            >
-              LogOut
-            </Text>
-          </Menu.Item>
-        </Menu>
+        <MenuList handleLogOut={handleLogOut} />
       </Sider>
+      <Drawer
+        title="Basic Drawer"
+        placement="left"
+        closable={false}
+        onClose={toggle}
+        visible={collapsed}
+        key="dtawer"
+        className="hideOnDesktop"
+        bodyStyle={{ backgroundColor: '#001529', padding: '0' }}
+      >
+        <MenuList handleLogOut={handleLogOut} />
+      </Drawer>
       <Layout className="site-layout">
         <Header
           className="site-layout-background"
@@ -135,5 +115,41 @@ function Pagelayout({ children }: Props) {
     </Layout>
   )
 }
-
+interface ListProps {
+  handleLogOut: () => void
+}
+function MenuList({ handleLogOut }: ListProps) {
+  return (
+    <Menu
+      theme="dark"
+      mode="inline"
+      defaultSelectedKeys={[window.location.pathname]}
+    >
+      <Menu.Item key="/" icon={<HomeOutlined />}>
+        <Link to="/">Home</Link>
+      </Menu.Item>
+      <Menu.Item key="/profile" icon={<UserOutlined />}>
+        <Link to="/profile">Profile</Link>
+      </Menu.Item>
+      <Menu.Item key="/appliedjobs" icon={<PlusSquareOutlined />}>
+        <Link to="/appliedjobs">Applied Jobs</Link>
+      </Menu.Item>
+      <Menu.Item key="/postjob" icon={<PlusOutlined />}>
+        <Link to="/postjob">Post Job</Link>
+      </Menu.Item>
+      <Menu.Item key="/postedjobs" icon={<CheckOutlined />}>
+        <Link to="/postedjobs">Posted Job</Link>
+      </Menu.Item>
+      <Menu.Item onClick={handleLogOut} icon={<LogoutOutlined />} key="/logout">
+        <Text
+          style={{
+            color: 'rgba(255, 255, 255, 0.65)',
+          }}
+        >
+          LogOut
+        </Text>
+      </Menu.Item>
+    </Menu>
+  )
+}
 export default Pagelayout
