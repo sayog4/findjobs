@@ -59,6 +59,12 @@ function Login() {
           </Form>
           <Divider />
           <Text>
+            Forgot your password ?{' '}
+            <Link to="/auth/password/forgot">Click here</Link> to reset
+            password.
+          </Text>
+          <br />
+          <Text>
             New user ? <Link to="/register">Click here</Link> to register.
           </Text>
         </Card>

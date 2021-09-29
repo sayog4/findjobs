@@ -7,6 +7,8 @@ interface UseAuth {
   preSignUp: (email: string, password: string, userName: string) => Promise<any>
   logIn: (email: string, password: string) => Promise<any>
   logOut: () => void
+  forgotPw: (email: string) => Promise<any>
+  resetPw: (token: string, password: string) => Promise<any>
 }
 interface Data {
   email?: string
@@ -35,7 +37,7 @@ export function useAuth(): UseAuth {
       }
       return message.error(
         error?.response?.data?.message ||
-          error?.response?.data?.message ||
+          error?.response?.data?.error ||
           SERVER_ERROR
       )
     }
@@ -83,8 +85,35 @@ export function useAuth(): UseAuth {
     return response?.errors
   }
 
+  async function forgotPw(email: string) {
+    const response = await serverCall(`/api/auth/forgotpassword`, {
+      email,
+    })
+    if (response?.status === 200) {
+      message.success(response.data.message)
+      // setTimeout(() => {
+      //   return (window.location.href = '/')
+      // }, 1000)
+    }
+    return response?.errors || response?.error
+  }
+
+  async function resetPw(token: string, password: string) {
+    const response = await serverCall(`/api/auth/resetpassword`, {
+      token,
+      password,
+    })
+    if (response?.status === 200) {
+      message.success(response.data.message)
+      setTimeout(() => {
+        return (window.location.href = '/login')
+      }, 1000)
+    }
+    return response?.errors || response?.error
+  }
+
   function logOut() {
     return axiosInstance.get('/api/auth/logout')
   }
-  return { logIn, signUp, logOut, preSignUp }
+  return { logIn, signUp, logOut, preSignUp, forgotPw, resetPw }
 }

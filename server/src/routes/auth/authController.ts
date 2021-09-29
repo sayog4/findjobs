@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
-import { decode, Secret, sign, verify } from 'jsonwebtoken'
+import { Secret, sign, verify } from 'jsonwebtoken'
 
 import User, { LoginModel } from '../../models/userModel'
 import { validationResult } from 'express-validator'
@@ -9,14 +9,20 @@ import { generateToken } from '../../utils/jwtToken'
 import { CustomRequest } from '../../types'
 import { SigninModel } from './../../models/userModel'
 import { decodeToken } from '../../utils/decodeToken'
-import { signUpLinkEmail } from '../../utils/sgMail'
+import { forgotPasswordEmailLink, signUpLinkEmail } from '../../utils/sgMail'
 
 const { genSalt, hash, compare } = bcrypt
 
 async function signUp(req: CustomRequest<{ token: any }>, res: Response) {
+  const errors = validationResult(req)
+  // express- validator error formatting
+
+  if (!errors.isEmpty()) {
+    const errs = formatError(errors)
+    return res.status(400).json({ errors: errs })
+  }
   try {
     const result = verify(req.body.token, process.env.JWT_PRE_SIGNUP as Secret)
-    console.log({ result })
     if (!result)
       return res.status(400).json({
         message: 'Token is invalid. Try filling registration form again!!',
@@ -46,6 +52,79 @@ async function signUp(req: CustomRequest<{ token: any }>, res: Response) {
     // throw new Error(`Token is invalid`)
     return res.status(400).json({
       error: `Token is invalid. Try filling registration form again!!`,
+    })
+  }
+}
+
+async function forgotPassword(
+  req: CustomRequest<{ email: string }>,
+  res: Response
+) {
+  const { email } = req.body
+  const errors = validationResult(req)
+  // express- validator error formatting
+
+  if (!errors.isEmpty()) {
+    const errs = formatError(errors)
+    return res.status(400).json({ errors: errs })
+  }
+
+  const user = await User.findOne({ email })
+  if (!user)
+    return res.status(400).json({
+      error:
+        'User with given email does not exist try registering for new account',
+    })
+
+  const token = sign({ _id: user._id }, process.env.JWT_RESET_PW as Secret, {
+    expiresIn: '20m',
+  })
+  await user.updateOne({ resetPasswordLink: token })
+  forgotPasswordEmailLink(token, email)
+  return res.json({
+    message: `Email has been sent to ${email}. Kindly follow the instructions to reset your password. Link will expire in 20 minutes.`,
+  })
+}
+
+async function resetPassword(
+  req: CustomRequest<{ token: string; password: string }>,
+  res: Response
+) {
+  const { token, password } = req.body
+  const errors = validationResult(req)
+  // express- validator error formatting
+
+  if (!errors.isEmpty()) {
+    const errs = formatError(errors)
+    return res.status(400).json({ errors: errs })
+  }
+  try {
+    const result = verify(req.body.token, process.env.JWT_RESET_PW as Secret)
+    if (!result)
+      return res.status(400).json({
+        message: 'Token is invalid. Try filling forgot password form again!!',
+      })
+    const user = User.findOne({ resetPasswordLink: token })
+    if (!user)
+      return res.status(400).json({
+        message: 'User not found',
+      })
+
+    const salt = await genSalt(10)
+    const hashedPw = await hash(password, salt)
+    await user.updateMany(
+      {},
+      { $set: { password: hashedPw, resetPasswordLink: '' } }
+    )
+    // await user.updateOne({ resetPasswordLink: '' })
+    // await user.updateOne({ password: hashedPw })
+
+    return res.json({
+      message: 'Great! Now you can login with new password',
+    })
+  } catch (error) {
+    return res.status(400).json({
+      error: `Token is invalid.`,
     })
   }
 }
@@ -120,4 +199,4 @@ function logOut(req: Request, res: Response) {
     .json({ message: 'Successfully logged out' })
 }
 
-export { signUp, logIn, logOut, preSignUp }
+export { signUp, logIn, logOut, preSignUp, forgotPassword, resetPassword }

@@ -8,8 +8,10 @@ import Jobdetails from './jobs/Jobdetails'
 import Postedjob from './jobs/Postedjob'
 import Postjob from './jobs/PostJob'
 import Activate from './user/Activate'
+import ForgotPw from './user/ForgotPw'
 import Login from './user/Login'
 import Register from './user/Register'
+import ResetPw from './user/ResetPw'
 import Userinfo from './user/Userinfo'
 import Userprofile from './user/Userprofile'
 
@@ -26,6 +28,8 @@ function Routes() {
           path="/auth/account/activate/:token"
           component={Activate}
         />
+        <Route exact path="/auth/password/reset/:token" component={ResetPw} />
+        <Route exact path="/auth/password/forgot" component={ForgotPw} />
         <PrivateRoute
           isLoading={isLoading}
           isAuthenticated={!!user}

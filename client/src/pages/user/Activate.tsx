@@ -1,4 +1,4 @@
-import { Button, Card, message } from 'antd'
+import { Button, Card, message, Row, Col } from 'antd'
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
@@ -19,22 +19,16 @@ function Activate({ match }: RouteComponentProps<{ token: string }>) {
   }
 
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Card size="default" title="Activate your account">
-        <p>Click on button below to activate your account.</p>
-        <Button disabled={loading} onClick={handleClick} type="primary">
-          Activate Account
-        </Button>
-      </Card>
-    </div>
+    <Row justify="center" className="fcenter bg">
+      <Col lg={8} md={16} sm={20} xs={24}>
+        <Card size="default" title="Activate your account">
+          <p>Click on button below to activate your account.</p>
+          <Button disabled={loading} onClick={handleClick} type="primary">
+            Activate Account
+          </Button>
+        </Card>
+      </Col>
+    </Row>
   )
 }
 

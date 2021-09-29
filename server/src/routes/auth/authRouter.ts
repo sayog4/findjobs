@@ -1,7 +1,14 @@
 import express from 'express'
 import { check } from 'express-validator'
 import { authorization } from '../../utils/checkAuth'
-import { signUp, logIn, logOut, preSignUp } from './authController'
+import {
+  signUp,
+  logIn,
+  logOut,
+  preSignUp,
+  forgotPassword,
+  resetPassword,
+} from './authController'
 
 const authRouter = express.Router()
 
@@ -24,6 +31,21 @@ authRouter.post(
   '/signup',
   check('token').exists().isString().withMessage('Provide token'),
   signUp
+)
+authRouter.post(
+  '/forgotpassword',
+  check('email').exists().isEmail().withMessage('Provide valid email address'),
+  forgotPassword
+)
+
+authRouter.post(
+  '/resetpassword',
+  check('password')
+    .exists()
+    .isLength({ min: 6 })
+    .withMessage('Password must be 6 characters long'),
+  check('token').exists().isString().withMessage('Provide token'),
+  resetPassword
 )
 
 authRouter.post(
