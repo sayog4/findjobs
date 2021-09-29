@@ -2,12 +2,14 @@ import { Spin, Table, Typography } from 'antd'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Pagelayout from '../../components/Pagelayout'
+import { formatDate } from '../../utils/formatDate'
 import { useGetAppliedJobs } from './hooks/useJob'
 
 const { Title } = Typography
 
 function Appliedjobs() {
   const { data, error, isLoading, isError } = useGetAppliedJobs()
+
   let errMsg = 'something went wrong'
   if (isError && error?.response?.data?.message) {
     errMsg = error?.response?.data?.message
@@ -15,9 +17,11 @@ function Appliedjobs() {
   const appliedJobs = []
   if (data) {
     let obj = {
-      title: data.appliedJobs[0].jobId.title,
-      companyName: data.appliedJobs[0].jobId.companyName,
-      appliedDate: data.appliedJobs[0].appliedDate,
+      title: data.appliedJobs[0]?.jobId.title,
+      companyName: data.appliedJobs[0]?.jobId.companyName,
+      appliedDate:
+        data.appliedJobs[0]?.appliedDate &&
+        formatDate(data.appliedJobs[0]?.appliedDate),
     }
     appliedJobs.push(obj)
   }
@@ -26,7 +30,7 @@ function Appliedjobs() {
       title: 'Job Title',
       dataIndex: 'title',
       render: (text: string) => (
-        <Link to={`/jobs/${data?.appliedJobs[0].jobId._id}`}>{text}</Link>
+        <Link to={`/jobs/${data?.appliedJobs[0]?.jobId._id}`}>{text}</Link>
       ),
     },
     { title: 'Company Name', dataIndex: 'companyName' },
@@ -49,7 +53,7 @@ function Appliedjobs() {
       <Table
         columns={columns}
         dataSource={appliedJobs}
-        rowKey={(record) => record.title}
+        rowKey={() => Math.random().toString(10).slice(4)}
       />
     </Pagelayout>
   )

@@ -4,6 +4,7 @@ import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import Pagelayout from '../../components/Pagelayout'
 import { PostedJobs } from '../../shared/types'
+import { formatDate } from '../../utils/formatDate'
 import { useGetPostedJobs } from './hooks/useJob'
 
 const { Title } = Typography
@@ -71,7 +72,7 @@ function Postedjob() {
     let obj = {
       title: d.title,
       companyName: d.companyName,
-      postedOn: d.createdAt,
+      postedOn: formatDate(d.createdAt),
       appliedCandidates: d.appliedCandidates.length,
       jobData: d,
     }
@@ -96,7 +97,7 @@ function Postedjob() {
       <Table
         columns={columns}
         dataSource={dsrc}
-        rowKey={(record) => record.postedOn}
+        rowKey={() => Math.random().toString(10).slice(4)}
       />
       <Modal
         visible={isModalVisible}
@@ -137,7 +138,7 @@ function Listcandidates({ selectedJob }: PropsType) {
     let obj = {
       candidateId: d.userId._id,
       fullName: d.userId.firstName + ' ' + d.userId.lastName,
-      appliedDate: d.appliedDate,
+      appliedDate: formatDate(d.appliedDate),
     }
     return dataSrc.push(obj)
   })
@@ -146,7 +147,7 @@ function Listcandidates({ selectedJob }: PropsType) {
     <Table
       columns={cols}
       dataSource={dataSrc}
-      rowKey={(record) => record.candidateId}
+      rowKey={() => Math.random().toString(10).slice(4)}
     />
   )
 }

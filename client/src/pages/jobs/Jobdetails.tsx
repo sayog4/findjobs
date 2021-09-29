@@ -7,6 +7,7 @@ import { useApplyJob, useJobDetail } from './hooks/useJob'
 import { useAuth } from '../../context/userContext'
 import { Link } from 'react-router-dom'
 import { queryKeys } from '../../reqct-query/constants'
+import { formatDate } from '../../utils/formatDate'
 
 const { Title, Text, Paragraph } = Typography
 
@@ -109,7 +110,7 @@ function Jobdetails({ match }: RouteComponentProps<{ id: string }>) {
             <Text strong className="mr-sm">
               Posted On:{' '}
             </Text>
-            {data.createdAt}
+            {formatDate(data.createdAt as Date)}
           </Paragraph>
           <Divider />
 

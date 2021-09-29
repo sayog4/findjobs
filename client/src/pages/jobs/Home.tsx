@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { useGetAllJobs } from './hooks/useJob'
 import { Job } from '../../shared/types'
 import { useSearchContext } from '../../context/searchContext'
+import { formatDate } from '../../utils/formatDate'
 
 const { Title, Text } = Typography
 
@@ -64,11 +65,11 @@ function Scrollable({ data }: any) {
                 </Tag>
               ))}
               <Divider />
-              <div className="flex-center">
+              <div className="flex">
                 <Link to={`/jobs/${job._id}`}>
                   <Button type="link">Details</Button>
                 </Link>
-                <Text>Posted on: {job.createdAt}</Text>
+                <Text>Posted on: {formatDate(job.createdAt as Date)}</Text>
               </div>
             </Card>
           </Col>

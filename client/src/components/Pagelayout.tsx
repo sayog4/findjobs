@@ -14,7 +14,6 @@ import { Link } from 'react-router-dom'
 import { useSearchContext } from '../context/searchContext'
 import { useAuth } from '../context/userContext'
 import { useAuth as useAuthentication } from '../hooks/useAuth'
-import { unstable_renderSubtreeIntoContainer } from 'react-dom'
 
 const { Header, Sider, Content } = Layout
 const { Title, Text } = Typography
