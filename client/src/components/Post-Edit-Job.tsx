@@ -46,7 +46,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
           initialValues={edit ? job : undefined}
         >
           <Row gutter={16}>
-            <Col lg={8} sm={24}>
+            <Col lg={8} sm={24} xs={24}>
               <Form.Item
                 validateStatus={errors?.companyName && 'error'}
                 help={errors?.companyName}
@@ -57,7 +57,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
                 <Input />
               </Form.Item>
             </Col>
-            <Col lg={8} sm={24}>
+            <Col lg={8} sm={24} xs={24}>
               <Form.Item
                 validateStatus={errors?.companyEmail && 'error'}
                 help={errors?.companyEmail}
@@ -68,7 +68,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
                 <Input disabled={edit} />
               </Form.Item>
             </Col>
-            <Col lg={8} sm={24}>
+            <Col lg={8} sm={24} xs={24}>
               <Form.Item
                 validateStatus={errors?.phoneNumber && 'error'}
                 help={errors?.phoneNumber}
@@ -79,7 +79,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
                 <Input />
               </Form.Item>
             </Col>
-            <Col lg={24} sm={24}>
+            <Col lg={24} sm={24} xs={24}>
               <Form.Item
                 validateStatus={errors?.companyDescription && 'error'}
                 help={errors?.companyDescription}
@@ -104,7 +104,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
           initialValues={edit ? job : undefined}
         >
           <Row gutter={16}>
-            <Col lg={8} sm={24}>
+            <Col lg={8} sm={24} xs={24}>
               <Form.Item
                 label="Job Title"
                 name="title"
@@ -115,7 +115,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
                 <Input />
               </Form.Item>
             </Col>
-            <Col lg={8} sm={24}>
+            <Col lg={8} sm={24} xs={24}>
               <Form.Item
                 validateStatus={errors?.department && 'error'}
                 help={errors?.department}
@@ -126,7 +126,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
                 <Input />
               </Form.Item>
             </Col>
-            <Col lg={8} sm={24}>
+            <Col lg={8} sm={24} xs={24}>
               <Form.Item
                 validateStatus={errors?.experience && 'error'}
                 help={errors?.experience}
@@ -137,7 +137,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
                 <Input />
               </Form.Item>
             </Col>
-            <Col lg={8} sm={24}>
+            <Col lg={8} sm={24} xs={24}>
               <Form.Item
                 validateStatus={errors?.salaryFrom && 'error'}
                 help={errors?.salaryFrom}
@@ -148,7 +148,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
                 <InputNumber />
               </Form.Item>
             </Col>
-            <Col lg={8} sm={24}>
+            <Col lg={8} sm={24} xs={24}>
               <Form.Item
                 validateStatus={errors?.salaryTo && 'error'}
                 help={errors?.salaryTo}
@@ -162,7 +162,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
           </Row>
 
           <Row gutter={16}>
-            <Col lg={8} sm={24}>
+            <Col lg={8} sm={24} xs={24}>
               <Form.Item
                 validateStatus={errors?.skillsRequired && 'error'}
                 help={errors?.skillsRequired}
@@ -179,7 +179,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
                 <Input />
               </Form.Item>
             </Col>
-            <Col lg={8} sm={24}>
+            <Col lg={8} sm={24} xs={24}>
               <Form.Item
                 validateStatus={errors?.minimumQualification && 'error'}
                 help={errors?.minimumQualification}
@@ -194,7 +194,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
                 </Select>
               </Form.Item>
             </Col>
-            <Col lg={24} sm={24}>
+            <Col lg={24} sm={24} xs={24}>
               <Form.Item
                 validateStatus={errors?.shortDescription && 'error'}
                 help={errors?.shortDescription}
@@ -205,7 +205,7 @@ const PostEditJob: React.FC<PostEditProps> = ({
                 <TextArea rows={3} />
               </Form.Item>
             </Col>
-            <Col lg={24} sm={24}>
+            <Col lg={24} sm={24} xs={24}>
               <Form.Item
                 validateStatus={errors?.fullDescription && 'error'}
                 help={errors?.fullDescription}

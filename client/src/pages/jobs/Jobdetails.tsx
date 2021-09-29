@@ -52,47 +52,63 @@ function Jobdetails({ match }: RouteComponentProps<{ id: string }>) {
         <>
           <Title level={2}>{data.title}</Title>
           <Title level={4}>{data.companyName}</Title>
+          <Paragraph>{data.shortDescription}</Paragraph>
           <Paragraph>
-            <Text strong>Info: </Text>
-            {data.shortDescription}
-          </Paragraph>
-          <Paragraph>
-            <Text strong>Description: </Text>
+            <Text strong className="mr-sm">
+              Job Description:{' '}
+            </Text>
             {data.fullDescription}
           </Paragraph>
-          <Text strong>Skills required: </Text>
+          <Text strong className="mr-sm">
+            Skills required:{' '}
+          </Text>
           {data.skillsRequired.split(',').map((s, i) => (
             <Tag color="purple" key={i}>
               {s}
             </Tag>
           ))}
           <Paragraph>
-            <Text strong>Experience: </Text> {data.experience}
+            <Text strong className="mr-sm">
+              Experience:{' '}
+            </Text>{' '}
+            {data.experience}
           </Paragraph>
           <Paragraph>
-            <Text strong>Minimum Qualification: </Text>{' '}
+            <Text strong className="mr-sm">
+              Minimum Qualification:{' '}
+            </Text>{' '}
             {data.minimumQualification}
           </Paragraph>
           <Divider />
           <Paragraph>
-            <Text strong>Salary range: </Text> {data.salaryFrom} -{' '}
-            {data.salaryTo}
+            <Text strong className="mr-sm">
+              Salary range:{' '}
+            </Text>{' '}
+            {data.salaryFrom} - {data.salaryTo}
           </Paragraph>
           <Paragraph>
-            <Text strong>Department: </Text>
+            <Text strong className="mr-sm">
+              Department:{' '}
+            </Text>
             {data.department}
           </Paragraph>
           <Paragraph>
-            <Text strong>Company profile</Text>
+            <Text strong className="mr-sm">
+              Company profile
+            </Text>
             {data.companyDescription}
           </Paragraph>
           <Paragraph>
-            <Text strong>Total Candidates Applied: </Text>
+            <Text strong className="mr-sm">
+              Total Candidates Applied:{' '}
+            </Text>
             {data.appliedCandidates?.length}
           </Paragraph>
-          <div>show button for applying/editing</div>
+
           <Paragraph>
-            <Text strong>Posted On: </Text>
+            <Text strong className="mr-sm">
+              Posted On:{' '}
+            </Text>
             {data.createdAt}
           </Paragraph>
           <Divider />

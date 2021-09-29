@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, Menu, Typography, Input, Button } from 'antd'
+import { Layout, Menu, Typography, Input } from 'antd'
 import {
   CheckOutlined,
   HomeOutlined,
@@ -24,7 +24,7 @@ interface Props {
 }
 
 function Pagelayout({ children }: Props) {
-  const [collapsed, setCollapsed] = React.useState(false)
+  const [collapsed, setCollapsed] = React.useState(true)
   const { setSearchQuery } = useSearchContext()
   const { user } = useAuth()
   const { logOut } = useAuthentication()
@@ -46,7 +46,9 @@ function Pagelayout({ children }: Props) {
         collapsed={collapsed}
         style={{ position: 'sticky', overflow: 'auto', top: 0 }}
       >
-        <Title className="logo">{collapsed ? 'FJ' : 'FindJobs'}</Title>
+        <Link to="/">
+          <Title className="logo">{collapsed ? 'FJ' : 'FindJobs'}</Title>
+        </Link>
 
         <Menu
           theme="dark"
@@ -106,12 +108,16 @@ function Pagelayout({ children }: Props) {
             </div>
 
             <div className="flex">
-              <Search onSearch={(value) => setSearchQuery(value)} />
+              {window.location.pathname === '/' && (
+                <Search onSearch={(value) => setSearchQuery(value)} />
+              )}
             </div>
 
             <div className="flex">
               <Link to="/profile" style={{ marginRight: 15 }}>
-                <Title level={5}>{user?.userName}</Title>
+                <Title style={{ color: '#fff' }} level={5}>
+                  {user?.userName}
+                </Title>
               </Link>
             </div>
           </div>

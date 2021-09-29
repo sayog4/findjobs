@@ -75,3 +75,15 @@ iframe {
   height: 100%;
   width: 100%;
 }
+.ant-typography {
+  margin: 10px 0;
+}
+.mr-sm {
+  margin-right: 10px;
+}
+.ant-layout-header {
+  background: #001529 !important;
+}
+.anticon-menu-fold {
+  color: #fff !important;
+}

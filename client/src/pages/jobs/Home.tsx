@@ -45,7 +45,7 @@ function Scrollable({ data }: any) {
               <Text>Company: {job.companyName}</Text>
               <Divider />
               <Text>{job.shortDescription}</Text>
-              <div className="flex-center">
+              <div className="flex">
                 <Text>
                   Salary :{' '}
                   <strong>
