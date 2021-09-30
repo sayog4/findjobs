@@ -8,6 +8,9 @@
     "install": "npm install --prefix client && npm install --prefix server",
     "heroku-postbuild": "npm run install && npm run build --prefix client && npm run build --prefix server"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"
