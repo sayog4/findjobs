@@ -16,6 +16,15 @@ const Home: React.FC = () => {
   const { data, fetchNextPage, hasNextPage, isLoading, isFetching, isError } =
     useGetAllJobs(search)
 
+  if (data?.pages[0].results.message) {
+    return (
+      <Pagelayout>
+        <Title level={3} style={{ color: 'red' }}>
+          {data?.pages[0].results.message}
+        </Title>
+      </Pagelayout>
+    )
+  }
   return (
     <Pagelayout>
       {isLoading && <Spin size="large" />}

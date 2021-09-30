@@ -171,7 +171,9 @@ const PostEditJob: React.FC<PostEditProps> = ({
                 rules={[
                   { required: true },
                   {
-                    pattern: new RegExp(/^([a-z0-9s]+,)*([a-z0-9s]+){1}$/i),
+                    pattern: new RegExp(
+                      /^([a-z0-9()+\-*/.\s]+,)*([a-z0-9()+\-*/.\s]+){1}$/i
+                    ),
                     message: 'use comma seperated values',
                   },
                 ]}

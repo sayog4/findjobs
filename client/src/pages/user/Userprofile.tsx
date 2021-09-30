@@ -26,7 +26,7 @@ function Userprofile() {
   const [personalInfo, setPersonalInfo] = React.useState({})
   const [activeTab, setActiveTab] = React.useState('0')
   const [errors, setErrors] = React.useState<any>({})
-  const { mutate, isError, isSuccess, error, isLoading } = useUpdate()
+  const { mutate, isError, error, isLoading } = useUpdate()
 
   React.useEffect(() => {
     if (isError) {

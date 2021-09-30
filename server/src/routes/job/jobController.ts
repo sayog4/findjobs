@@ -44,7 +44,7 @@ async function findJobs(
   req: CustomRequest<any, SearchQuery, any>,
   res: Response
 ) {
-  const pageSize = 5
+  const pageSize = 6
   const page = Number(req.query.page) || 1
   const keyword = req.query.search
     ? {

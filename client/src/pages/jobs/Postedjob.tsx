@@ -35,7 +35,7 @@ function Postedjob() {
 
   const columns = [
     {
-      titile: 'Title',
+      title: 'Title',
       dataIndex: 'title',
     },
     {

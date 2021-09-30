@@ -45,6 +45,7 @@ async function signUp(req: CustomRequest<{ token: any }>, res: Response) {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         domain: '',
+        maxAge: 24 * 60 * 60 * 1000 * 365,
       })
       .status(201)
       .json({ message: 'signUp successful.' })
@@ -187,6 +188,7 @@ async function logIn(req: CustomRequest<LoginModel>, res: Response) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       domain: '',
+      maxAge: 24 * 60 * 60 * 1000 * 365,
     })
     .status(200)
     .json({ message: 'Login successful.' })

@@ -1,13 +1,19 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { message } from 'antd'
+import { useQueryClient } from 'react-query'
 import Pagelayout from '../../components/Pagelayout'
 import { usePostJob } from './hooks/useJob'
 import PostEditJob from '../../components/Post-Edit-Job'
+import { queryKeys } from '../../reqct-query/constants'
+import { useSearchContext } from '../../context/searchContext'
 
 const Postjob = () => {
+  const queryClient = useQueryClient()
+
+  const { search } = useSearchContext()
   const history = useHistory()
-  const { mutate, isError, isSuccess, error } = usePostJob()
+  const { mutate, isError, error } = usePostJob()
 
   const [errors, setErrors] = React.useState<any>()
   const [comapnyInfo, setCompanyInfo] = React.useState({})
@@ -26,18 +32,24 @@ const Postjob = () => {
       salaryTo: parseFloat(values.salaryTo),
       ...values,
     }
-    mutate(newObj)
+    mutate(newObj, {
+      onSuccess: () => {
+        queryClient.invalidateQueries([queryKeys.jobs, search])
+        queryClient.invalidateQueries(queryKeys.postedJobs)
+        history.push('/')
+      },
+    })
   }
 
   function changeTab(value: string) {
     setActiveTab(value)
   }
 
-  React.useEffect(() => {
-    if (isSuccess) {
-      history.push('/')
-    }
-  }, [isSuccess, history])
+  // React.useEffect(() => {
+  //   if (isSuccess) {
+  //     history.push('/')
+  //   }
+  // }, [isSuccess, history])
 
   React.useEffect(() => {
     if (isError) {
